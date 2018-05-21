@@ -31,7 +31,8 @@
       </template>
 
       <template slot="expand" slot-scope="props">
-        <People :familyId="props.item.id" :guestIds="props.item.guests"></People>
+        <!-- <People :familyId="props.item.id" :guestIds="props.item.guests"></People> -->
+        <FamilyDetail :family="props.item"></FamilyDetail>
       </template>
 
     </v-data-table>
@@ -41,9 +42,7 @@
 
 <script>
 import { db } from "../../main.js";
-import FamiliesAdd from './FamiliesAdd'
-import FamiliesItem from './FamiliesItem'
-import People from './People'
+import FamilyDetail from './FamilyDetail'
 
 const familiesRef = ''
 
@@ -80,9 +79,7 @@ export default {
     }
   },
   components: {
-    FamiliesAdd,
-    FamiliesItem,
-    People
+    FamilyDetail
   }
 };
 </script>
