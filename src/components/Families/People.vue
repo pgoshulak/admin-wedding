@@ -1,5 +1,28 @@
 <template>
   <div>
+    <v-form v-model="valid">
+      <v-container text-xs-left>
+        <v-layout row wrap>
+          <v-flex xs5>
+            <v-text-field
+              v-model="newName"
+              label="Name"
+              required
+            ></v-text-field>
+          </v-flex>
+          <v-flex xs5>
+            <v-text-field
+              v-model="newEmail"
+              label="E-mail"
+            ></v-text-field>
+          </v-flex>
+          <v-flex xs2>
+            <v-btn color="info" @click="submitNew">Save</v-btn>
+          </v-flex>
+        </v-layout>
+      </v-container>
+    </v-form>
+
     <v-data-table :headers="headers" :items="guests" hide-actions hide-headers dark>
       <tr>
         <td>Extra row here</td>
@@ -21,6 +44,8 @@ import { db } from '../../main.js'
   export default {
     data() {
       return {
+        newName: '',
+        newEmail: '',
         guests: [],
         headers: [
           {
@@ -34,6 +59,11 @@ import { db } from '../../main.js'
         ]
       }
     },
+    computed: {
+      newId() {
+        return this.newName.split(' ').reverse().join('-').toLowerCase()
+      }
+    },
     filters: {
       rsvpText(status) {
         return status === undefined ? 'No response' : (
@@ -42,6 +72,19 @@ import { db } from '../../main.js'
       }
     },
     props: ['familyId', 'guestIds'],
+    methods: {
+      submitNew() {
+        if (this.newName) {
+          db.collection('guests').doc(this.newId).set({
+            name: this.newName,
+            email: this.newEmail,
+            family: this.familyId
+          })
+          this.newName = ''
+          this.newEmail = ''
+        }
+      }
+    },
     firestore() {
       return {
         // FIXME: Below is the preferred query type, using the /family/guests array of guestIds

@@ -17,13 +17,11 @@
       <template slot="items" slot-scope="props">
         <tr @click="props.expanded = !props.expanded">
           <td>{{props.item.name}}</td>
-          <td>{{props.item.guests && props.item.guests.length}}</td>
           <td>{{props.item.streetAddress}}</td>
         </tr>
       </template>
 
       <template slot="expand" slot-scope="props">
-        <!-- <FamiliesAdd :family="props.item" :familyId="props.item.id"></FamiliesAdd> -->
         <People :familyId="props.item.id" :guestIds="props.item.guests"></People>
       </template>
 
@@ -49,10 +47,6 @@ export default {
         {
           text: 'Name',
           value: 'name'
-        },
-        {
-          text: 'Guests',
-          value: 'guests.length'
         },
         {
           text: 'Address',
