@@ -1,4 +1,5 @@
 <template>
+<div>
   <v-expansion-panel focusable>
     <v-expansion-panel-content v-for="guest in guests" :key="guest.id">
       <div slot="header">
@@ -11,10 +12,25 @@
           <p v-if="guest.restrictions">Restrictions: {{guest.restrictions}}</p>
           <p v-if="guest.song">Song: {{guest.song}}</p>
           <p v-if="guest.comment">Comment: {{guest.comment}}</p>
+          <v-btn outline small color="error" @click="openDeleteDialog(guest)">Delete</v-btn>
         </v-card-text>
       </v-card>
     </v-expansion-panel-content>
   </v-expansion-panel>
+  <v-dialog id="delete-dialog" v-model="deleteDialog" max-width="400px">
+    <v-card>
+      <v-card-title>
+        <h4>Delete {{guestToDelete.name}}?</h4>
+      </v-card-title>
+      <v-card-text>This cannot be undone</v-card-text>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn small outline color="primary" @click="deleteDialog=false">Cancel</v-btn>
+        <v-btn small color="error" @click="deleteGuest">Delete</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
+  </div>
 </template>
 
 <script>
@@ -23,6 +39,8 @@ export default {
   props: ["familyId"],
   data() {
     return {
+      deleteDialog: false,
+      guestToDelete: {},
       guests: [],
       headers: [
         {
@@ -51,9 +69,24 @@ export default {
       // guests: this.guestIds.map(id => db.collection('guests').doc(id))
       guests: db.collection("guests").where("family", "==", this.familyId)
     };
+  },
+  methods: {
+    openDeleteDialog(guest) {
+      this.guestToDelete = guest
+      this.deleteDialog = true;
+    },
+    deleteGuest() {
+      // alert(`Guest ${this.guestToDelete.name} deleted at ${this.guestToDelete.id}`)
+      db.collection("guests").doc(this.guestToDelete.id).delete().then(() => {
+        this.deleteDialog = false;
+      })
+    }
   }
 };
 </script>
 
 <style scoped>
+#delete-dialog {
+  max-width: 400px;
+}
 </style>
