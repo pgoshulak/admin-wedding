@@ -1,9 +1,12 @@
 <template>
-  <div>
-    {{family.name}} Family
+  <v-card class="family-detail elevation-8">
+    <v-card-title primary-title>
+    <h3 class="headline">{{family.name}} Family</h3>
+
+    </v-card-title>
     <PeopleAdd :familyId="family.id"></PeopleAdd>
     <PeopleList :familyId="family.id"></PeopleList>
-  </div>
+  </v-card>
 </template>
 
 <script>
@@ -19,4 +22,7 @@ export default {
 </script>
 
 <style scoped>
+.family-detail {
+  padding: 10px;
+}
 </style>

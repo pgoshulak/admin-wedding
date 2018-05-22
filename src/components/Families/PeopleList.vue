@@ -1,13 +1,20 @@
 <template>
-  <v-data-table :headers="headers" :items="guests" hide-actions hide-headers>
-    <template slot="items" slot-scope="props">
-      <tr>
-        <td>{{props.item.name}}</td>
-        <td>{{props.item.rsvp | rsvpText}}</td>
-        <td>{{props.item.email}}</td>
-      </tr>
-    </template>
-  </v-data-table>
+  <v-expansion-panel focusable>
+    <v-expansion-panel-content v-for="guest in guests" :key="guest.id">
+      <div slot="header">
+        {{guest.name}} - {{guest.rsvp | rsvpText}}
+      </div>
+      <v-card>
+        <v-card-text>
+          <p v-if="guest.email">Email: <a :href="`mailto:${guest.email}`">{{guest.email}}</a></p>
+          <p v-if="guest.phone">Phone: {{guest.phone}}</p>
+          <p v-if="guest.restrictions">Restrictions: {{guest.restrictions}}</p>
+          <p v-if="guest.song">Song: {{guest.song}}</p>
+          <p v-if="guest.comment">Comment: {{guest.comment}}</p>
+        </v-card-text>
+      </v-card>
+    </v-expansion-panel-content>
+  </v-expansion-panel>
 </template>
 
 <script>
