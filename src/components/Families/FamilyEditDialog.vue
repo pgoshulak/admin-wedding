@@ -52,7 +52,7 @@
         if (this.updateFamilyNameInput != '') {
           db.collection('families').doc(this.family.id).set({
             name: this.updateFamilyNameInput
-          })
+          }, {merge: true})
         }
         this.close()
         this.updateFamilyNameInput = ''

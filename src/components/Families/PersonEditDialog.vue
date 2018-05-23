@@ -50,9 +50,9 @@
     methods: {
       updatePerson() {
         if (this.updatePersonNameInput != '') {
-          db.collection('families').doc(this.person.id).set({
+          db.collection('guests').doc(this.person.id).set({
             name: this.updatePersonNameInput
-          })
+          }, {merge: true})
         }
         this.close()
         this.updatePersonNameInput = ''
