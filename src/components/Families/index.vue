@@ -40,43 +40,26 @@
 
     </v-data-table>
 
-    <v-dialog id="edit-family-name-dialog" v-model="familyEditDialog" max-width="400px">
-      <v-card>
-        <v-card-title>
-          <h4>Editing {{familyToEdit.name}}</h4>
-        </v-card-title>
-        <v-card-text>
-          <v-text-field
-            v-model="updateFamilyNameInput"
-            append-icon="edit"
-            label="Family Display Name"
-            hide-details
-            @keyup.enter="updateFamily"
-          ></v-text-field>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn small outline color="primary" @click="familyEditDialog=false">Cancel</v-btn>
-          <v-btn small color="primary" @click="updateFamily">Save</v-btn>
-        </v-card-actions>
-      </v-card>
-  </v-dialog>
-
+    <FamilyEditDialog
+      :isOpenProp.sync="familyEditDialogOpen"
+      :family="familyToEdit"
+      @close="closeFamilyEditDialog"
+    ></FamilyEditDialog>
   </div>
 </template>
 
 <script>
 import { db } from "../../main.js";
 import FamilyDetail from './FamilyDetail'
+import FamilyEditDialog from './FamilyEditDialog'
 
 const familiesRef = ''
 
 export default {
   data() {
     return {
-      familyEditDialog: false,
+      familyEditDialogOpen: false,
       familyToEdit: {},
-      updateFamilyNameInput: '',
       newFamilyNameInput: '',
       search: '',
       families: [],
@@ -106,22 +89,18 @@ export default {
       })
     },
     openFamilyEditDialog(family) {
-      this.familyEditDialog = true
+      console.log('index > openFamilyEditDialog', family.id)
+      this.familyEditDialogOpen = true
       this.familyToEdit = family
-      this.updateFamilyNameInput = family.name
     },
-    updateFamily() {
-      if (this.updateFamilyNameInput != '') {
-        db.collection('families').doc(this.familyToEdit.id).set({
-          name: this.updateFamilyNameInput
-        })
-      }
-      this.familyEditDialog = false
-      this.updateFamilyNameInput = ''
+    closeFamilyEditDialog() {
+      this.familyEditDialogOpen = false
     }
+    
   },
   components: {
-    FamilyDetail
+    FamilyDetail,
+    FamilyEditDialog
   }
 };
 </script>
