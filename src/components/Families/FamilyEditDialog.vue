@@ -1,5 +1,5 @@
 <template>
-  <v-dialog id="edit-family-name-dialog" v-model="isOpenData" max-width="400px" @close="alert('closed')">
+  <v-dialog id="edit-family-name-dialog" v-model="isOpenData" max-width="400px">
     <v-card>
       <v-card-title>
         <h4>Editing {{this.family.name}}</h4>

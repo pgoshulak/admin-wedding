@@ -17,7 +17,10 @@
     <v-card-text class="text-xs-left">
       Everyone listed below can RSVP together
     </v-card-text>
-    <PeopleList :familyId="family.id"></PeopleList>
+    <PeopleList 
+      :familyId="family.id"
+      @openPersonEditDialog="openPersonEditDialog"
+    ></PeopleList>
     <PeopleAdd :familyId="family.id"></PeopleAdd>
 
   </v-card>
@@ -34,6 +37,9 @@ export default {
     },
     openFamilyEditDialog() {
       this.$emit("openFamilyEditDialog", this.family)
+    },
+    openPersonEditDialog(data) {
+      this.$emit("openPersonEditDialog", data)
     }
   },
   components: {

@@ -22,12 +22,12 @@
           <p v-if="guest.restrictions">Restrictions: {{guest.restrictions}}</p>
           <p v-if="guest.song">Song: {{guest.song}}</p>
           <p v-if="guest.comment">Comment: {{guest.comment}}</p>
-          <v-btn outline small color="error" @click="openDeleteDialog(guest)">Delete</v-btn>
+          <v-btn outline small color="info" @click="openEditDialog(guest)">Edit</v-btn>
         </v-card-text>
       </v-card>
     </v-expansion-panel-content>
   </v-expansion-panel>
-  <v-dialog id="delete-dialog" v-model="deleteDialog" max-width="400px">
+<!--   <v-dialog id="delete-dialog" v-model="deleteDialog" max-width="400px">
     <v-card>
       <v-card-title>
         <h4>Delete {{guestToDelete.name}}?</h4>
@@ -39,7 +39,7 @@
         <v-btn small color="error" @click="deleteGuest">Delete</v-btn>
       </v-card-actions>
     </v-card>
-  </v-dialog>
+  </v-dialog> -->
   </div>
 </template>
 
@@ -49,8 +49,6 @@ export default {
   props: ["familyId"],
   data() {
     return {
-      deleteDialog: false,
-      guestToDelete: {},
       guests: [],
       headers: [
         {
@@ -64,13 +62,6 @@ export default {
       ]
     };
   },
-  filters: {
-    rsvpText(status) {
-      return status === undefined
-        ? "No response"
-        : status === true ? "Yes" : "No";
-    }
-  },
   firestore() {
     return {
       // FIXME: Below is the preferred query type, using the /family/guests array of guestIds
@@ -81,16 +72,15 @@ export default {
     };
   },
   methods: {
-    openDeleteDialog(guest) {
-      this.guestToDelete = guest
-      this.deleteDialog = true;
+    openEditDialog(person) {
+      this.$emit("openPersonEditDialog", person)
     },
-    deleteGuest() {
+    /* deleteGuest() {
       // alert(`Guest ${this.guestToDelete.name} deleted at ${this.guestToDelete.id}`)
       db.collection("guests").doc(this.guestToDelete.id).delete().then(() => {
         this.deleteDialog = false;
       })
-    }
+    } */
   }
 };
 </script>

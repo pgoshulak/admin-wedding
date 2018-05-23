@@ -35,6 +35,7 @@
           :family="props.item"
           @closeDetailView="props.expanded = false"
           @openFamilyEditDialog="openFamilyEditDialog"
+          @openPersonEditDialog="openPersonEditDialog"
         ></FamilyDetail>
       </template>
 
@@ -45,6 +46,11 @@
       :family="familyToEdit"
       @close="closeFamilyEditDialog"
     ></FamilyEditDialog>
+    <PersonEditDialog
+      :isOpenProp.sync="personEditDialogOpen"
+      :person="personToEdit"
+      @close="closePersonEditDialog"
+    ></PersonEditDialog>
   </div>
 </template>
 
@@ -52,6 +58,7 @@
 import { db } from "../../main.js";
 import FamilyDetail from './FamilyDetail'
 import FamilyEditDialog from './FamilyEditDialog'
+import PersonEditDialog from './PersonEditDialog'
 
 const familiesRef = ''
 
@@ -59,7 +66,9 @@ export default {
   data() {
     return {
       familyEditDialogOpen: false,
+      personEditDialogOpen: false,
       familyToEdit: {},
+      personToEdit: {},
       newFamilyNameInput: '',
       search: '',
       families: [],
@@ -89,18 +98,26 @@ export default {
       })
     },
     openFamilyEditDialog(family) {
-      console.log('index > openFamilyEditDialog', family.id)
       this.familyEditDialogOpen = true
       this.familyToEdit = family
     },
+    openPersonEditDialog(person) {
+      console.log('-----person is ', person)
+      this.personEditDialogOpen = true
+      this.personToEdit = person
+    },
     closeFamilyEditDialog() {
       this.familyEditDialogOpen = false
+    },
+    closePersonEditDialog() {
+      this.personEditDialogOpen = false
     }
     
   },
   components: {
     FamilyDetail,
-    FamilyEditDialog
+    FamilyEditDialog,
+    PersonEditDialog
   }
 };
 </script>
