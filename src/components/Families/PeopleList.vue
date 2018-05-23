@@ -3,7 +3,17 @@
   <v-expansion-panel focusable>
     <v-expansion-panel-content v-for="guest in guests" :key="guest.id">
       <div slot="header">
-        {{guest.name}} - {{guest.rsvp | rsvpText}}
+        
+        <span class="rsvp-icon-container" v-if="guest.rsvp===true">
+          <v-icon color="success">check_circle</v-icon>  Yes
+        </span>
+        <span class="rsvp-icon-container" v-else-if="guest.rsvp===false">
+          <v-icon color="red">cancel</v-icon>  No
+        </span>
+        <span class="rsvp-icon-container" v-else>
+          <v-icon color="info">mail</v-icon>  Waiting
+        </span>
+        <strong class="body-2s">{{guest.name}}</strong>
       </div>
       <v-card>
         <v-card-text>
@@ -88,5 +98,9 @@ export default {
 <style scoped>
 #delete-dialog {
   max-width: 400px;
+}
+.rsvp-icon-container {
+  display: inline-block;
+  width: 100px;
 }
 </style>
