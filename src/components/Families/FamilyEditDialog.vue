@@ -1,26 +1,44 @@
 <template>
-  <v-dialog id="edit-family-name-dialog" v-model="isOpenData" max-width="400px">
-    <v-card>
-      <v-card-title>
-        <h4>Editing {{this.family.name}}</h4>
-      </v-card-title>
-      <v-card-text>
-        <v-text-field
-          v-model="updateFamilyNameInput"
-          append-icon="edit"
-          label="Display Name"
-          hide-details
-          :placeholder="this.family.name"
-          @keyup.enter="updateFamily"
-        ></v-text-field>
-      </v-card-text>
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn small outline color="primary" @click="close">Cancel</v-btn>
-        <v-btn small color="primary" @click="updateFamily">Save</v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+  <div>
+    <v-dialog id="edit-family-dialog" v-model="isOpenData" max-width="400px">
+      <v-card>
+        <v-card-title>
+          <h4>Editing {{this.family.name}}</h4>
+        </v-card-title>
+        <v-card-text>
+          <v-text-field
+            v-model="updateFamilyNameInput"
+            append-icon="edit"
+            label="Display Name"
+            hide-details
+            :placeholder="this.family.name"
+            @keyup.enter="updateFamily"
+          ></v-text-field>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn small outline color="error" @click="deleteDialogIsOpen=true">Delete</v-btn>
+          <v-spacer></v-spacer>
+          <v-btn small outline color="primary" @click="close">Cancel</v-btn>
+          <v-btn small color="primary" @click="updateFamily">Save</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-dialog id="delete-family-dialog" v-model="deleteDialogIsOpen" max-width="300px">
+      <v-card>
+        <v-card-title>
+          <h4 class="subheading">Really delete {{this.family.name}}?</h4>
+        </v-card-title>
+        <v-card-text>
+          This cannot be undone
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn small outline color="primary" @click="deleteDialogIsOpen=false">Cancel</v-btn>
+          <v-btn small color="error" @click="deleteFamily">Delete</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </div>
 </template>
 
 <script>
@@ -30,7 +48,8 @@
     data() {
       return {
         updateFamilyNameInput: '',
-        isOpenData: false
+        isOpenData: false,
+        deleteDialogIsOpen: false
       }
     },
     watch: {
@@ -60,6 +79,12 @@
       close() {
         this.$emit('close')
         this.updateFamilyNameInput = ''
+      },
+      deleteFamily() {
+        db.collection("families").doc(this.family.id).delete().then(() => {
+          this.deleteDialogIsOpen = false;
+          this.close()
+        })
       }
     },
   }
