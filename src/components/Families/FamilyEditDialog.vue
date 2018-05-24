@@ -38,6 +38,14 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-snackbar
+      :timeout="6000"
+      color="error"
+      v-model="errorSnackbarIsOpen"
+    >
+      {{ errorSnackbarMessage }}
+      <v-btn dark flat @click.native="errorSnackbarIsOpen=false">Close</v-btn>
+    </v-snackbar>
   </div>
 </template>
 
@@ -49,7 +57,9 @@
       return {
         updateFamilyNameInput: '',
         isOpenData: false,
-        deleteDialogIsOpen: false
+        deleteDialogIsOpen: false,
+        errorSnackbarIsOpen: false,
+        errorSnackbarMessage: ''
       }
     },
     watch: {
@@ -81,10 +91,21 @@
         this.updateFamilyNameInput = ''
       },
       deleteFamily() {
-        db.collection("families").doc(this.family.id).delete().then(() => {
-          this.deleteDialogIsOpen = false;
-          this.close()
+        // Lazy-check whether the family is empty
+        // Better(?) solution for scale: https://stackoverflow.com/questions/46554091/firebase-firestore-collection-count
+        db.collection("guests").where('family', '==', this.family.id).get().then((snap) => {
+          if (snap.empty) {
+            db.collection("families").doc(this.family.id).delete().then(() => {
+              this.deleteDialogIsOpen = false;
+              this.close()
+            })
+          } else {
+            this.errorSnackbarIsOpen = true
+            this.errorSnackbarMessage = `Error: "${this.family.name}" still has ${snap.size} members. Please delete them first`
+            this.deleteDialogIsOpen = false;
+          }
         })
+
       }
     },
   }
