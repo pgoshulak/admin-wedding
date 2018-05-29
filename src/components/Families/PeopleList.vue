@@ -27,19 +27,6 @@
       </v-card>
     </v-expansion-panel-content>
   </v-expansion-panel>
-<!--   <v-dialog id="delete-dialog" v-model="deleteDialog" max-width="400px">
-    <v-card>
-      <v-card-title>
-        <h4>Delete {{guestToDelete.name}}?</h4>
-      </v-card-title>
-      <v-card-text>This cannot be undone</v-card-text>
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn small outline color="primary" @click="deleteDialog=false">Cancel</v-btn>
-        <v-btn small color="error" @click="deleteGuest">Delete</v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog> -->
   </div>
 </template>
 
@@ -68,19 +55,13 @@ export default {
       // It currently throws 'document.onSnapshot is not a function'
       // It is a more optimized query (IDs known, vs. query on familyId)
       // guests: this.guestIds.map(id => db.collection('guests').doc(id))
-      guests: db.collection("guests").where("family", "==", this.familyId)
+      guests: db.collection("guests").where("familyId", "==", this.familyId)
     };
   },
   methods: {
     openEditDialog(person) {
       this.$emit("openPersonEditDialog", person)
-    },
-    /* deleteGuest() {
-      // alert(`Guest ${this.guestToDelete.name} deleted at ${this.guestToDelete.id}`)
-      db.collection("guests").doc(this.guestToDelete.id).delete().then(() => {
-        this.deleteDialog = false;
-      })
-    } */
+    }
   }
 };
 </script>

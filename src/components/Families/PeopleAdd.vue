@@ -41,7 +41,7 @@ export default {
           .add({
             name: this.newName,
             email: this.newEmail,
-            family: this.familyId
+            familyId: this.familyId
           })
           .then(() => {
             this.newName = "";

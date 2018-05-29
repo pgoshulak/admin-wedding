@@ -93,7 +93,7 @@
       deleteFamily() {
         // Lazy-check whether the family is empty
         // Better(?) solution for scale: https://stackoverflow.com/questions/46554091/firebase-firestore-collection-count
-        db.collection("guests").where('family', '==', this.family.id).get().then((snap) => {
+        db.collection("guests").where('familyId', '==', this.family.id).get().then((snap) => {
           if (snap.empty) {
             db.collection("families").doc(this.family.id).delete().then(() => {
               this.deleteDialogIsOpen = false;
