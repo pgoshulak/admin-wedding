@@ -3,15 +3,15 @@
   <v-expansion-panel focusable>
     <v-expansion-panel-content v-for="guest in guests" :key="guest.id">
       <div slot="header">
-        
-        <span class="rsvp-icon-container" v-if="guest.rsvp===true">
-          <v-icon color="success">check_circle</v-icon>  Yes
+
+        <span class="rsvp-icon-container" v-if="guest.rsvp==='REQUEST_INVITE'">
+          <v-icon color="info">mail</v-icon>  Send Invite
         </span>
-        <span class="rsvp-icon-container" v-else-if="guest.rsvp===false">
-          <v-icon color="red">cancel</v-icon>  No
+        <span class="rsvp-icon-container" v-else-if="guest.rsvp==='EARLY_REJECT'">
+          <v-icon color="red">cancel</v-icon>  Early Reject
         </span>
         <span class="rsvp-icon-container" v-else>
-          <v-icon color="info">mail</v-icon>  Waiting
+          <v-icon color="grey">help</v-icon>  Waiting
         </span>
         <strong class="body-2s">{{guest.name}}</strong>
       </div>
