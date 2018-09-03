@@ -5,6 +5,7 @@
         <v-flex xs5>
           <v-text-field
             v-model="newName"
+            @keyup.enter="submitNew"
             label="Name"
             required
           ></v-text-field>
@@ -12,6 +13,7 @@
         <v-flex xs5>
           <v-text-field
             v-model="newEmail"
+            @keyup.enter="submitNew"
             label="E-mail"
           ></v-text-field>
         </v-flex>

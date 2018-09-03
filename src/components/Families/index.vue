@@ -18,11 +18,17 @@
         single-line
         hide-details
       ></v-text-field>
-   
+
     </v-card-title>
 
-    <v-data-table :headers="headers" :items="families" :search="search">
-      
+    <v-data-table
+      :headers="headers"
+      :items="families"
+      :search="search"
+      :rows-per-page-items="[50]"
+      ref="dataTable"
+      >
+
       <template slot="items" slot-scope="props">
         <tr @click="props.expanded = !props.expanded">
           <td>{{props.item.name}}</td>
@@ -31,7 +37,7 @@
       </template>
 
       <template slot="expand" slot-scope="props">
-        <FamilyDetail 
+        <FamilyDetail
           :family="props.item"
           @closeDetailView="props.expanded = false"
           @openFamilyEditDialog="openFamilyEditDialog"
@@ -93,7 +99,12 @@ export default {
     addNewFamily() {
       db.collection('families').add({
         name: this.newFamilyNameInput
-      }).then(() => {
+      }).then(res => {
+        // Auto-expand the new family's entry to quickly add new guests
+        this.search = this.newFamilyNameInput
+        let newFamilyId = res.id
+        this.$refs.dataTable.expanded[newFamilyId] = true
+
         this.newFamilyNameInput = ''
       })
     },
@@ -102,7 +113,6 @@ export default {
       this.familyToEdit = family
     },
     openPersonEditDialog(person) {
-      console.log('-----person is ', person)
       this.personEditDialogOpen = true
       this.personToEdit = person
     },
@@ -111,8 +121,11 @@ export default {
     },
     closePersonEditDialog() {
       this.personEditDialogOpen = false
+    },
+    log(thing) {
+      console.log(thing)
     }
-    
+
   },
   components: {
     FamilyDetail,
