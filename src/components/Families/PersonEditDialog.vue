@@ -14,7 +14,25 @@
             :placeholder="this.person.name"
             @keyup.enter="updatePerson"
           ></v-text-field>
+          <v-text-field
+            v-model="updatePersonEmailInput"
+            append-icon="edit"
+            label="Email"
+            hide-details
+            :placeholder="this.person.email"
+            @keyup.enter="updatePerson"
+          ></v-text-field>
+          <v-text-field
+            v-model="updatePersonPhoneInput"
+            append-icon="edit"
+            label="Phone"
+            hide-details
+            mask="phone"
+            :placeholder="this.person.phone"
+            @keyup.enter="updatePerson"
+          ></v-text-field>
         </v-card-text>
+
         <v-card-actions>
           <v-btn small outline color="error" @click="deleteDialogIsOpen=true">Delete</v-btn>
           <v-spacer></v-spacer>
@@ -48,6 +66,8 @@
     data() {
       return {
         updatePersonNameInput: '',
+        updatePersonEmailInput: '',
+        updatePersonPhoneInput: '',
         isOpenData: false,
         deleteDialogIsOpen: false
       }
@@ -68,22 +88,43 @@
     },
     methods: {
       updatePerson() {
-        if (this.updatePersonNameInput != '') {
-          db.collection('guests').doc(this.person.id).set({
-            name: this.updatePersonNameInput
-          }, {merge: true})
+        let dataToUpdate = {}
+        if (this.updatePersonNameInput !== '') {
+          dataToUpdate.name = this.updatePersonNameInput
         }
-        this.close()
-        this.updatePersonNameInput = ''
+        if (this.updatePersonEmailInput !== '') {
+          dataToUpdate.email = this.updatePersonEmailInput
+        }
+        if (this.updatePersonPhoneInput !== '') {
+          dataToUpdate.phone = this.updatePersonPhoneInput
+        }
+        db.collection('guests')
+          .doc(this.person.id)
+          .set(dataToUpdate, {merge: true})
+          .then(() => {
+            this.close()
+            this.updatePersonNameInput = ''
+            this.updatePersonEmailInput = ''
+            this.updatePersonPhoneInput = ''
+          }).catch(err => {
+            alert('Error! See console')
+            console.error(err)
+          })
+
       },
       close() {
         this.$emit('close')
         this.updatePersonNameInput = ''
+        this.updatePersonEmailInput = ''
+        this.updatePersonPhoneInput = ''
       },
       deletePerson() {
         db.collection("guests").doc(this.person.id).delete().then(() => {
           this.deleteDialogIsOpen = false;
           this.close()
+        }).catch(err => {
+          alert('Error! See console')
+          console.error(err)
         })
       }
     },

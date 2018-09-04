@@ -2,7 +2,7 @@
   <v-form>
     <v-container text-xs-left>
       <v-layout row wrap>
-        <v-flex xs5>
+        <v-flex xs4>
           <v-text-field
             v-model="newName"
             @keyup.enter="submitNew"
@@ -10,11 +10,19 @@
             required
           ></v-text-field>
         </v-flex>
-        <v-flex xs5>
+        <v-flex xs4>
           <v-text-field
             v-model="newEmail"
             @keyup.enter="submitNew"
             label="E-mail"
+          ></v-text-field>
+        </v-flex>
+        <v-flex xs2>
+          <v-text-field
+            v-model="newPhone"
+            @keyup.enter="submitNew"
+            mask="phone"
+            label="Phone"
           ></v-text-field>
         </v-flex>
         <v-flex xs2>
@@ -32,7 +40,8 @@ export default {
   data() {
     return {
       newName: "",
-      newEmail: ""
+      newEmail: "",
+      newPhone: ""
     };
   },
   methods: {
@@ -43,11 +52,13 @@ export default {
           .add({
             name: this.newName,
             email: this.newEmail,
+            phone: this.newPhone,
             familyId: this.familyId
           })
           .then(() => {
             this.newName = "";
             this.newEmail = "";
+            this.newPhone = "";
           });
       }
     }
