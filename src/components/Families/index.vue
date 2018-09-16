@@ -1,5 +1,6 @@
 <template>
   <div>
+    <pre class="text-xs-left">{{pageUrl}}</pre>
     <v-card-title>
       Families
       <v-spacer></v-spacer>
@@ -65,6 +66,7 @@ import { db } from "../../main.js";
 import FamilyDetail from './FamilyDetail'
 import FamilyEditDialog from './FamilyEditDialog'
 import PersonEditDialog from './PersonEditDialog'
+import { pageUrl } from '../../../secrets.js'
 
 const familiesRef = ''
 
@@ -87,7 +89,8 @@ export default {
           text: 'Address',
           value: 'streetAddress'
         }
-      ]
+      ],
+      pageUrl: pageUrl || 'Add pageUrl as export from /secrets.js'
     };
   },
   firestore() {
