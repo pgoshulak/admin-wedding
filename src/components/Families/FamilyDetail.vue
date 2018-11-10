@@ -15,9 +15,14 @@
 
     </v-card-title>
     <v-card-text class="text-xs-left">
+      {{address.streetAddress}}
+      {{address.city}}
+      {{address.province}}
+      {{address.postalCode}}
+      {{address.country}} <br/>
       Everyone listed below can RSVP together
     </v-card-text>
-    <PeopleList 
+    <PeopleList
       :familyId="family.id"
       @openPersonEditDialog="openPersonEditDialog"
     ></PeopleList>
@@ -42,6 +47,22 @@ export default {
       this.$emit("openPersonEditDialog", data)
     }
   },
+  computed: {
+    address() {
+      let streetAddress = this.family.streetAddress || ''
+      let city = this.family.city || ''
+      let province = this.family.province || ''
+      let country = this.family.country || ''
+      let postalCode = this.family.postalCode || ''
+      return {
+        streetAddress,
+        city,
+        province,
+        country,
+        postalCode
+      }
+    }
+  },
   components: {
     PeopleAdd,
     PeopleList
@@ -56,7 +77,7 @@ export default {
 .family-name .edit-family-name {
     opacity: 0;
     cursor: pointer;
-  
+
 }
 .family-name:hover {
   & .edit-family-name {
@@ -65,6 +86,6 @@ export default {
   & .edit-family-name:hover {
     opacity: 1.0;
   }
-  
+
 }
 </style>
