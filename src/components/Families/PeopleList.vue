@@ -10,6 +10,12 @@
         <span class="rsvp-icon-container" v-else-if="guest.rsvp==='EARLY_REJECT'">
           <v-icon color="red">cancel</v-icon>  Early Reject
         </span>
+        <span class="rsvp-icon-container" v-else-if="guest.rsvp==='ACCEPT'">
+          <v-icon color="success">check_circle</v-icon>  Accept
+        </span>
+        <span class="rsvp-icon-container" v-else-if="guest.rsvp==='REJECT'">
+          <v-icon color="red">cancel</v-icon>  Reject
+        </span>
         <span class="rsvp-icon-container" v-else>
           <v-icon color="grey">help</v-icon>  Waiting
         </span>
