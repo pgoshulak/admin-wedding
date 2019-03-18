@@ -20,14 +20,13 @@
           <v-icon color="grey">help</v-icon>  Waiting
         </span>
         <strong class="body-2s">{{guest.name}}</strong>
+        <span class="ml-5">{{guest.restrictions}}</span>
+        <span class="ml-5">{{guest.comment}}</span>
       </div>
       <v-card>
         <v-card-text>
           <p v-if="guest.email">Email: <a :href="`mailto:${guest.email}`">{{guest.email}}</a></p>
           <p v-if="guest.phone">Phone: {{guest.phone}}</p>
-          <p v-if="guest.restrictions">Restrictions: {{guest.restrictions}}</p>
-          <p v-if="guest.song">Song: {{guest.song}}</p>
-          <p v-if="guest.comment">Comment: {{guest.comment}}</p>
           <v-btn outline small color="info" @click="openEditDialog(guest)">Edit</v-btn>
         </v-card-text>
       </v-card>
