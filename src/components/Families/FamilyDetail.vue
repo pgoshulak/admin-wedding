@@ -24,6 +24,7 @@
     </v-card-text>
     <PeopleList
       :familyId="family.id"
+      :guests="family.familyGuests"
       @openPersonEditDialog="openPersonEditDialog"
     ></PeopleList>
     <PeopleAdd :familyId="family.id"></PeopleAdd>

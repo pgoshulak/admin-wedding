@@ -24,15 +24,16 @@
 
     <v-data-table
       :headers="headers"
-      :items="families"
+      :items="familiesWithGuests"
       :search="search"
-      :rows-per-page-items="[50]"
+      :rows-per-page-items="[120]"
       ref="dataTable"
       >
 
       <template slot="items" slot-scope="props">
         <tr @click="props.expanded = !props.expanded">
           <td>{{props.item.name}}</td>
+          <td><FamilyRSVPs :family="props.item"/></td>
           <td>{{props.item.streetAddress}}</td>
         </tr>
       </template>
@@ -66,6 +67,7 @@ import { db } from "../../main.js";
 import FamilyDetail from './FamilyDetail'
 import FamilyEditDialog from './FamilyEditDialog'
 import PersonEditDialog from './PersonEditDialog'
+import FamilyRSVPs from './FamilyRSVPs'
 import { pageUrl } from '../../../secrets.js'
 
 const familiesRef = ''
@@ -80,10 +82,15 @@ export default {
       newFamilyNameInput: '',
       search: '',
       families: [],
+      guests: [],
       headers: [
         {
           text: 'Name',
           value: 'name'
+        },
+        {
+          text: 'RSVP',
+          value: null
         },
         {
           text: 'Address',
@@ -95,8 +102,21 @@ export default {
   },
   firestore() {
     return {
-      families: db.collection('families')
+      families: db.collection('families'),
+      guests: db.collection('guests')
     };
+  },
+  computed: {
+    familiesWithGuests () {
+      return this.families.map(family => {
+        let familyGuests = this.guests.filter(g => g.familyId === family.id)
+        return {
+          ...family,
+          id: family.id,
+          familyGuests
+        }
+      })
+    }
   },
   methods: {
     addNewFamily() {
@@ -133,6 +153,7 @@ export default {
   components: {
     FamilyDetail,
     FamilyEditDialog,
+    FamilyRSVPs,
     PersonEditDialog
   }
 };

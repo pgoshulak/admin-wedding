@@ -39,10 +39,9 @@
 <script>
 import { db } from "../../main.js";
 export default {
-  props: ["familyId"],
+  props: ["familyId", "guests"],
   data() {
     return {
-      guests: [],
       headers: [
         {
           text: "Name",
@@ -53,15 +52,6 @@ export default {
           value: "email"
         }
       ]
-    };
-  },
-  firestore() {
-    return {
-      // FIXME: Below is the preferred query type, using the /family/guests array of guestIds
-      // It currently throws 'document.onSnapshot is not a function'
-      // It is a more optimized query (IDs known, vs. query on familyId)
-      // guests: this.guestIds.map(id => db.collection('guests').doc(id))
-      guests: db.collection("guests").where("familyId", "==", this.familyId)
     };
   },
   methods: {
