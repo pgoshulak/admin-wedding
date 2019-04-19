@@ -31,6 +31,12 @@
             :placeholder="this.person.phone"
             @keyup.enter="updatePerson"
           ></v-text-field>
+          <v-radio-group v-model="updatePersonTypeInput">
+            <v-radio label="Adult (13+)" value=""/>
+            <v-radio label="Child (4-12)" value="CHILD"/>
+            <v-radio label="Toddler (0-3)" value="TODDLER"/>
+            <v-radio label="Vendor" value="VENDOR"/>
+          </v-radio-group>
         </v-card-text>
 
         <v-card-actions>
@@ -68,6 +74,7 @@
         updatePersonNameInput: '',
         updatePersonEmailInput: '',
         updatePersonPhoneInput: '',
+        updatePersonTypeInput: '',
         isOpenData: false,
         deleteDialogIsOpen: false
       }
@@ -84,6 +91,9 @@
         if (val == false) {
           this.updatePersonNameInput = ''
         }
+      },
+      person (newPerson) {
+        this.updatePersonTypeInput = newPerson.type || ''
       }
     },
     methods: {
@@ -98,6 +108,7 @@
         if (this.updatePersonPhoneInput !== '') {
           dataToUpdate.phone = this.updatePersonPhoneInput
         }
+        dataToUpdate.type = this.updatePersonTypeInput
         db.collection('guests')
           .doc(this.person.id)
           .set(dataToUpdate, {merge: true})
@@ -106,6 +117,7 @@
             this.updatePersonNameInput = ''
             this.updatePersonEmailInput = ''
             this.updatePersonPhoneInput = ''
+            this.updatePersonTypeInput = ''
           }).catch(err => {
             alert('Error! See console')
             console.error(err)
@@ -117,6 +129,7 @@
         this.updatePersonNameInput = ''
         this.updatePersonEmailInput = ''
         this.updatePersonPhoneInput = ''
+        this.updatePersonTypeInput = ''
       },
       deletePerson() {
         db.collection("guests").doc(this.person.id).delete().then(() => {

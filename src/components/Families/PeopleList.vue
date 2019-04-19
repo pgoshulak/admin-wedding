@@ -19,7 +19,7 @@
         <span class="rsvp-icon-container" v-else>
           <v-icon color="grey">help</v-icon>  Waiting
         </span>
-        <strong class="body-2s">{{guest.name}}</strong>
+        <strong class="body-2s">{{guest.name}} {{guest.type ? `(${guest.type})` : ''}}</strong>
         <span class="ml-5">{{guest.restrictions}}</span>
         <span class="ml-5">{{guest.comment}}</span>
       </div>
