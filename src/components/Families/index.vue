@@ -1,8 +1,8 @@
 <template>
   <div>
     <pre class="text-xs-left">{{pageUrl}}</pre>
+    <GuestCount :guests="guests" />
     <v-card-title>
-      Families
       <v-spacer></v-spacer>
       <v-text-field
         v-model="newFamilyNameInput"
@@ -68,6 +68,7 @@ import FamilyDetail from './FamilyDetail'
 import FamilyEditDialog from './FamilyEditDialog'
 import PersonEditDialog from './PersonEditDialog'
 import FamilyRSVPs from './FamilyRSVPs'
+import GuestCount from './GuestCount'
 import { pageUrl } from '../../../secrets.js'
 
 const familiesRef = ''
@@ -154,6 +155,7 @@ export default {
     FamilyDetail,
     FamilyEditDialog,
     FamilyRSVPs,
+    GuestCount,
     PersonEditDialog
   }
 };
