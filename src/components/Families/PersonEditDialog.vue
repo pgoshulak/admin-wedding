@@ -37,6 +37,11 @@
             <v-radio label="Toddler (0-3)" value="TODDLER"/>
             <v-radio label="Vendor" value="VENDOR"/>
           </v-radio-group>
+          <v-radio-group v-model="updatePersonRsvpInput">
+            <v-radio color="success" label="Accept" value="ACCEPT"/>
+            <v-radio color="red" label="Reject" value="REJECT"/>
+            <v-radio color="info" label="Awaiting" value="REQUEST_INVITE"/>
+          </v-radio-group>
         </v-card-text>
 
         <v-card-actions>
@@ -75,6 +80,7 @@
         updatePersonEmailInput: '',
         updatePersonPhoneInput: '',
         updatePersonTypeInput: '',
+        updatePersonRsvpInput: '',
         isOpenData: false,
         deleteDialogIsOpen: false
       }
@@ -94,6 +100,7 @@
       },
       person (newPerson) {
         this.updatePersonTypeInput = newPerson.type || ''
+        this.updatePersonRsvpInput = newPerson.rsvp || ''
       }
     },
     methods: {
@@ -109,6 +116,7 @@
           dataToUpdate.phone = this.updatePersonPhoneInput
         }
         dataToUpdate.type = this.updatePersonTypeInput
+        dataToUpdate.rsvp = this.updatePersonRsvpInput
         db.collection('guests')
           .doc(this.person.id)
           .set(dataToUpdate, {merge: true})
@@ -118,6 +126,7 @@
             this.updatePersonEmailInput = ''
             this.updatePersonPhoneInput = ''
             this.updatePersonTypeInput = ''
+            this.updatePersonRsvpInput = ''
           }).catch(err => {
             alert('Error! See console')
             console.error(err)
@@ -130,6 +139,7 @@
         this.updatePersonEmailInput = ''
         this.updatePersonPhoneInput = ''
         this.updatePersonTypeInput = ''
+        this.updatePersonRsvpInput = ''
       },
       deletePerson() {
         db.collection("guests").doc(this.person.id).delete().then(() => {
