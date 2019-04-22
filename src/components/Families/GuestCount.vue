@@ -36,7 +36,8 @@
       </v-flex>
     </v-layout>
     Response rate: <strong class="mr-4">{{responseRate}} %</strong>
-    Anticipated headcount: <strong>{{headCount(anticipatedBreakdown)}}</strong>
+    Anticipated headcount: <strong class="mr-4">{{headCount(anticipatedBreakdown)}}</strong>
+    Maximum remaining headcount: <strong>{{headCount(breakdown(confirmedGuests)) + headCount(breakdown(awaitedGuests))}}</strong>
   </div>
 </template>
 
