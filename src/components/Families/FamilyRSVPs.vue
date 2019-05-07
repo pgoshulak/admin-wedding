@@ -9,7 +9,7 @@
       <v-icon v-else color="grey lighten-2">help</v-icon>
 
       <v-icon v-if="rsvp.restrictions" color="orange" small>restaurant</v-icon>
-      <v-icon v-if="rsvp.comment" color="pink" small>mode_comment</v-icon>
+      <v-icon v-if="rsvp.comment" color="pink lighten-4" small>mode_comment</v-icon>
     </span>
   </div>
 </template>

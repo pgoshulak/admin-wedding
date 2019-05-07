@@ -26,7 +26,7 @@
       :headers="headers"
       :items="familiesWithGuests"
       :search="search"
-      :rows-per-page-items="[120]"
+      :rows-per-page-items="[-1]"
       ref="dataTable"
       >
 

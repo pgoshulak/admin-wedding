@@ -35,7 +35,8 @@
         </v-card>
       </v-flex>
     </v-layout>
-    Response rate: <strong class="mr-4">{{responseRate}} %</strong>
+    Responses received: <strong class="mr-4">{{responseReceivedRatio}} %</strong>
+    "Accept" ratio: <strong class="mr-4">{{acceptRatio}} %</strong>
     Anticipated headcount: <strong class="mr-4">{{headCount(anticipatedBreakdown)}}</strong>
     Maximum remaining headcount: <strong>{{headCount(breakdown(confirmedGuests)) + headCount(breakdown(awaitedGuests))}}</strong>
   </div>
@@ -66,11 +67,17 @@ export default {
         {title: 'Awaiting response', guests: this.awaitedGuests},
       ]
     },
-    responseRate () {
+    acceptRatio () {
       let totalAccepted = this.confirmedGuests.length
       let totalResponses = this.confirmedGuests.length + this.rejectedGuests.length
       let rate = totalAccepted / totalResponses
       return Math.round(1000*rate) / 10
+    },
+    responseReceivedRatio () {
+      let totalSent = this.allGuests.length
+      let totalReceived = this.confirmedGuests.length + this.rejectedGuests.length
+      let ratio = totalReceived / totalSent
+      return Math.round(1000*ratio) / 10
     },
     anticipatedBreakdown () {
       let getResponseRate = (type) => {
